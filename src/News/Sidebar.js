@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
+import CountrySelect from './CountrySelect';
 
 const useStyles = makeStyles(theme => ({
   sidebarAboutBox: {
@@ -18,30 +18,27 @@ const useStyles = makeStyles(theme => ({
 
 export default function Sidebar(props) {
   const classes = useStyles();
-  const { countries, description, title } = props;
+  const { description, title } = props;
 
   return (
     <Grid item xs={12} md={4}>
+      <Typography variant="h6" gutterBottom className={classes.sidebarSection}>
+        <CountrySelect/>
+      </Typography>
+      
       <Paper elevation={0} className={classes.sidebarAboutBox}>
         <Typography variant="h6" gutterBottom>
           {title}
         </Typography>
         <Typography>{description}</Typography>
       </Paper>
-      <Typography variant="h6" gutterBottom className={classes.sidebarSection}>
-        countries
-      </Typography>
-      {countries.map(archive => (
-        <Link display="block" variant="body1" href={archive.url} key={archive.title}>
-          {archive.title}
-        </Link>
-      ))}
+      
+      
     </Grid>
   );
 }
 
 Sidebar.propTypes = {
-  countries: PropTypes.array,
   description: PropTypes.string,
   title: PropTypes.string,
 };

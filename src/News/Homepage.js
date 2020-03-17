@@ -5,7 +5,6 @@ import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import Header from './Header';
 import MainFeaturedPost from './MainFeaturedPost';
-import FeaturedPost from './FeaturedPost';
 import Main from './Main';
 import Sidebar from './Sidebar';
 import Footer from './Footer';
@@ -37,53 +36,23 @@ const mainFeaturedPost = {
   linkText: 'Continue reading…',
 };
 
-const featuredPosts = [
-  {
-    title: 'Featured post',
-    date: 'Nov 12',
-    description:
-      'This is a wider card with supporting text below as a natural lead-in to additional content.',
-    image: 'https://source.unsplash.com/random',
-    imageText: 'Image Text',
-  },
-  {
-    title: 'Post title',
-    date: 'Nov 11',
-    description:
-      'This is a wider card with supporting text below as a natural lead-in to additional content.',
-    image: 'https://source.unsplash.com/random',
-    imageText: 'Image Text',
-  },
-];
-
 const posts = [post1, post2, post3];
 
 const sidebar = {
   title: 'About',
-  description:
-    'Lorem ipsum',
-  countries: [
-    { title: 'Indonesia', url: '#' },
-    { title: 'England', url: '#' },
-    { title: 'Singapore', url: '#' },
-  ]
+  description: 'Get breaking news headline from worlwide and search article from over 30,000 news sources and blogs.'
 };
 
-export default function News() {
+export default function Homepage() {
   const classes = useStyles();
 
-  return (
+  return ( 
     <React.Fragment>
       <CssBaseline />
       <Container maxWidth="lg">
         <Header title="News" sections={sections} />
         <main>
           <MainFeaturedPost post={mainFeaturedPost} />
-          <Grid container spacing={4}>
-            {featuredPosts.map(post => (
-              <FeaturedPost key={post.title} post={post} />
-            ))}
-          </Grid>
           <Grid container spacing={5} className={classes.mainGrid}>
             <Main title="From the firehose" posts={posts} />
             <Sidebar

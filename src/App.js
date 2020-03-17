@@ -1,8 +1,11 @@
+
 import React from 'react';
-import News from './News/News';
+import Routes from './routes';
 
 export default function Page() {
   return (
-      <News />
+    <React.Fragment>
+        <Routes/>
+    </React.Fragment>
   );  
 }

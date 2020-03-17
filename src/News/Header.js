@@ -40,7 +40,7 @@ export default function Header(props) {
         >
           {title}
         </Typography>
-        <Button variant="outlined" size="small">
+        <Button variant="outlined" size="small" href="/sign-in">
           Sign in
         </Button>
       </Toolbar>

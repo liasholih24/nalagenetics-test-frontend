@@ -20,16 +20,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const sections = [
-  { title: 'Technology', url: '#' },
-  { title: 'Design', url: '#' },
-  { title: 'Culture', url: '#' },
   { title: 'Business', url: '#' },
-  { title: 'Politics', url: '#' },
-  { title: 'Opinion', url: '#' },
-  { title: 'Science', url: '#' },
+  { title: 'Entertainment', url: '#' },
   { title: 'Health', url: '#' },
-  { title: 'Style', url: '#' },
-  { title: 'Travel', url: '#' },
+  { title: 'Science', url: '#' },
+  { title: 'Sports', url: '#' },
+  { title: 'Technology', url: '#' }
 ];
 
 const mainFeaturedPost = {

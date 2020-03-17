@@ -5,6 +5,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
+import CountrySelect from './CountrySelect';
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
@@ -30,6 +31,9 @@ export default function Header(props) {
   return (
     <React.Fragment>
       <Toolbar className={classes.toolbar}>
+      <Typography align="left" variant="h6" gutterBottom className={classes.sidebarSection}>
+        <CountrySelect/>
+      </Typography>
         <Typography
           component="h2"
           variant="h5"

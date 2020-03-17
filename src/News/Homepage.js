@@ -8,9 +8,6 @@ import MainFeaturedPost from './MainFeaturedPost';
 import Main from './Main';
 import Sidebar from './Sidebar';
 import Footer from './Footer';
-import post1 from './blog-post.1.md';
-import post2 from './blog-post.2.md';
-import post3 from './blog-post.3.md';
 
 const useStyles = makeStyles(theme => ({
   mainGrid: {
@@ -36,9 +33,8 @@ const mainFeaturedPost = {
   linkText: 'Continue reading…',
 };
 
-const posts = [post1, post2, post3];
 
-const sidebar = {
+const sidebar = { 
   title: 'About',
   description: 'Get breaking news headline from worlwide and search article from over 30,000 news sources and blogs.'
 };
@@ -54,7 +50,7 @@ export default function Homepage() {
         <main>
           <MainFeaturedPost post={mainFeaturedPost} />
           <Grid container spacing={5} className={classes.mainGrid}>
-            <Main title="From the firehose" posts={posts} />
+            <Main title="Top Headlines"/>
             <Sidebar
               title={sidebar.title}
               description={sidebar.description}

@@ -26,13 +26,13 @@ const useStyles = makeStyles(theme => ({
 
 export default function Header(props) {
   const classes = useStyles();
-  const { sections, title } = props;
+  const { sections, title, onCategoryClick, handleCountry, id, name} = props;
 
   return (
     <React.Fragment>
       <Toolbar className={classes.toolbar}>
       <Typography align="left" variant="h6" gutterBottom className={classes.sidebarSection}>
-        <CountrySelect/>
+        <CountrySelect handleCountry={handleCountry} id={id} name={name}/>
       </Typography>
         <Typography
           component="h2"
@@ -54,9 +54,11 @@ export default function Header(props) {
             color="inherit"
             noWrap
             key={section.title}
+            data-id={section.key}
             variant="body2"
             href={section.url}
             className={classes.toolbarLink}
+            onClick={onCategoryClick}
           >
             {section.title}
           </Link>

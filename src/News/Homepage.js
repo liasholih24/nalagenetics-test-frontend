@@ -1,4 +1,5 @@
-import React from 'react';
+import axios from 'axios';
+import React, {useEffect, useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
@@ -16,12 +17,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const sections = [
-  { title: 'Business', url: '#' },
-  { title: 'Entertainment', url: '#' },
-  { title: 'Health', url: '#' },
-  { title: 'Science', url: '#' },
-  { title: 'Sports', url: '#' },
-  { title: 'Technology', url: '#' }
+  { title: 'Business', url: '#', key: 'business'},
+  { title: 'Entertainment', url: '#', key: 'entertainment'},
+  { title: 'Health', url: '#', key: 'health'},
+  { title: 'Science', url: '#', key: 'science'},
+  { title: 'Sports', url: '#', key: 'sports'},
+  { title: 'Technology', url: '#', key: 'technology'}
 ];
 
 const mainFeaturedPost = {
@@ -40,17 +41,56 @@ const sidebar = {
 };
 
 export default function Homepage() {
+
   const classes = useStyles();
+  const [news,setNews] = useState([])
+  const [counts,setCounts] = useState(1)
+  const [category,setCategory] = useState('technology')
+  const [country,setCountry] = useState('id')
+  const [page, setPage] = React.useState(1);
+  const [id, setId] = React.useState('');
+  const [name, setName] = React.useState('');
+  
+  async function fetchData(category, country) {
+    const request = await axios.get('http://newsapi.org/v2/top-headlines?country='+country+'&category='+category+'&apiKey=121558c37f944ebe8379b78b4bde9923')
+    const data = request.data.articles
+    const counts = Math.ceil(data.length / 6)
+    setNews(data)
+    setCounts(counts)
+    setCategory(category)
+    setCountry(country)
+  } 
+
+  useEffect(() => {
+    fetchData('technology','id')
+  }, []) 
+
+  const handleChange = (event, value) => { 
+    setPage(value)
+    fetchData(category, country)
+  }
+
+  const handleCategory = (event) => {
+      setPage(1)
+      fetchData(event.currentTarget.dataset.id, country)
+  }
+
+  const handleCountry = (event) => {
+    setId(event.target.value || '')
+    setName(event.currentTarget.dataset.name || '')
+    console.log(event.target.value)
+    fetchData(category, event.target.value)
+ }
 
   return ( 
     <React.Fragment>
       <CssBaseline />
       <Container maxWidth="lg">
-        <Header title="News" sections={sections} />
+        <Header title="News" sections={sections} onCategoryClick={handleCategory} handleCountry={handleCountry} id={id} name={name} />
         <main>
           <MainFeaturedPost post={mainFeaturedPost} />
           <Grid container spacing={5} className={classes.mainGrid}>
-            <Main title="Top Headlines"/>
+            <Main title="Top Headlines" category={category} news={news} page={page} counts={counts} handleChange={handleChange} />
             <Sidebar
               title={sidebar.title}
               description={sidebar.description}
@@ -63,3 +103,4 @@ export default function Homepage() {
     </React.Fragment>
   );
 }
+

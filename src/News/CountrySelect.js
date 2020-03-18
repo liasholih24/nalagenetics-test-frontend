@@ -20,10 +20,10 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function DialogSelect() {
+export default function CountrySelect(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const [id, setId] = React.useState('');
+  const {handleCountry, id, name} = props
 
   const countries = [
     { name: 'Argentina', id: 'ar' },
@@ -82,9 +82,10 @@ export default function DialogSelect() {
     { name: 'Venezuela', id: 've' }
   ];
 
-  const handleChange = (event) => {
+  /*const handleChange = (event) => {
      setId(event.target.value || '');
-  };
+     console.log(event.target.value)
+  };*/
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -96,7 +97,7 @@ export default function DialogSelect() {
 
   return (
     <div>
-      <Button onClick={handleClickOpen}>Change Country</Button>
+      <Button onClick={handleClickOpen}> {name ? name : 'Change Country'}</Button>
       <Dialog disableBackdropClick disableEscapeKeyDown open={open} onClose={handleClose}>
         <DialogContent>
           <form className={classes.container}>
@@ -106,10 +107,10 @@ export default function DialogSelect() {
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={id}
-          onChange={handleChange}
+          onChange={handleCountry}
         >
           {countries.map(country => (
-            <MenuItem key={country.id} value={country.id} >{country.name}</MenuItem>
+            <MenuItem key={country.id} value={country.id} data-name={country.name} >{country.name}</MenuItem>
           ))}
         </Select>
       </FormControl>

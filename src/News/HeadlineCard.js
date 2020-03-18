@@ -1,5 +1,4 @@
-import axios from 'axios';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import Moment from 'react-moment';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -14,7 +13,7 @@ import { Pagination } from '@material-ui/lab';
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 345,
+    maxWidth: 820,
     margin: "10px",
     padding: "10px"
   },
@@ -23,35 +22,14 @@ const useStyles = makeStyles({
   },
 });
 
-export default function HeadlineCard() {
+export default function HeadlineCard(props) {
   const classes = useStyles();
 
-  const [news,setNews] = useState([])
-  const [counts,setCounts] = useState(1)
-
-  async function fetchData() {
-    const request = await axios.get('http://newsapi.org/v2/top-headlines?country=id&apiKey=121558c37f944ebe8379b78b4bde9923')
-    const data = request.data.articles
-    const counts = Math.ceil(data.length / 10)
-    setNews(data)
-    setCounts(counts)
-    console.log(data)
-  } 
-
-  useEffect(() => {
-    fetchData()
-  }, []) 
-
-  const [page, setPage] = React.useState(1);
-  const handleChange = (event, value) => {
-    setPage(value);
-    fetchData()
-  };
+  const {news, page, counts, handleChange} = props
 
   return (
     <Grid container spacing={1}>
-    {news.slice((page * 10) - 10, (page * 10)).map((item, index) => (
-      <Grid item xs={12} sm={6}>
+    {news.slice((page * 6) - 6, (page * 6)).map((item, index) => (
         <Card className={classes.root}>
             <CardActionArea>
               <CardMedia
@@ -85,10 +63,9 @@ export default function HeadlineCard() {
               </Button>
             </CardActions>
           </Card>
-      </Grid>
      ))}
       <div>
-        <Pagination count={counts} page={page} onChange={handleChange} />
+        <Pagination className={classes.root} count={counts} page={page} onChange={handleChange} />
       </div>
     </Grid>
     

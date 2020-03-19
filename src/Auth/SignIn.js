@@ -68,7 +68,7 @@ export default function SignIn() {
 
         console.log(result)
         localStorage.setItem('myToken', result.data.token)
-        localStorage.setItem('id', result.data.user._id)
+        localStorage.setItem('userId', result.data.user._id)
         localStorage.setItem('name', result.data.user.name)
         setRedirect(true)
         

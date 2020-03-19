@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import Header from './Header';
 import MainFeaturedPost from './MainFeaturedPost';
 import Main from './Main';
@@ -15,6 +16,12 @@ const useStyles = makeStyles(theme => ({
   mainGrid: {
     marginTop: theme.spacing(3),
   },
+  load: {
+    display: 'flex',
+    '& > * + *': {
+      marginLeft: theme.spacing(2)
+    }
+  }
 }));
 
 const sections = [
@@ -56,18 +63,44 @@ export default function Homepage() {
   const [newspublishedAt, setpublishedAt] = useState('')
   const [newscontent, setcontent] = useState('')
   const [newsauthor, setauthor] = useState('')
+  const [maintitle, setMainTitle] = useState('Top Headlines')
+  const [loader, setLoader] = useState(false)
+  const AuthToken = localStorage.getItem('myToken')
+  const userId = localStorage.getItem('userId')
   
   async function fetchData(category, country) {
-    const request = await axios.get('http://newsapi.org/v2/top-headlines?country='+country+'&category='+category+'&apiKey=121558c37f944ebe8379b78b4bde9923')
-    const data = request.data.articles
-    const counts = Math.ceil(data.length / 6)
-    setNews(data)
-    setCounts(counts)
-    setCategory(category)
-    setCountry(country)
+
+     await axios.get('http://localhost:3001/v2/top-headlines?country='+country+'&category='+category+'&apiKey=121558c37f944ebe8379b78b4bde9923').then((result) => {
+
+    const data = result.data.articles
+      const counts = Math.ceil(data.length / 6)
+      setNews(data)
+      setCounts(counts)
+      setCategory(category)
+      setCountry(country)
+      setLoader(false)
+       
+    })
+    
   } 
 
+  async function fetchSavedData() {
+    const config = {
+      headers: { Authorization: `Bearer ${AuthToken}` }
+    };
+
+     await axios.get('http://localhost:3001/news?userId'+userId,config).then((result) => {
+      const data = result.data
+      const counts = Math.ceil(data.length / 6)
+      setNews(data)
+      setCounts(counts)
+      setLoader(false)
+    })
+    
+  }
+
   useEffect(() => {
+    setLoader(true)
     fetchData('technology','id')
   }, []) 
 
@@ -78,9 +111,11 @@ export default function Homepage() {
   }
  
   const handleCategory = (event) => {
+      setLoader(true)
       setPage(1)
-      fetchData(event.currentTarget.dataset.id, country)
       setSection('main')
+      setMainTitle(event.currentTarget.dataset.title+' Headlines')
+      fetchData(event.currentTarget.dataset.id, country)
   }
 
   const handleCountry = (event) => {
@@ -99,6 +134,50 @@ export default function Homepage() {
     setauthor(event.currentTarget.dataset.author)
   }
 
+  const handleSave = (event) => {
+
+    if(!AuthToken){
+      alert("Please login to save news")
+    }else{
+      //save news
+
+      const datas = {
+        "userId" : userId,
+        "title" : event.currentTarget.dataset.title,
+        "publishedAt" : event.currentTarget.dataset.publishedAt,
+        "author" : event.currentTarget.dataset.author,
+        "content" : event.currentTarget.dataset.content
+      }
+
+      saveNews(datas)
+
+
+    }
+    
+  }
+
+  const saveNews = async (values) => {
+
+    console.log(values)
+
+    const config = {
+      headers: { Authorization: `Bearer ${AuthToken}` }
+    };
+  
+
+    await axios.post('http://localhost:3001/news',values,config).then((result) => {
+
+       alert("News has been saved")
+        
+    });
+
+  }
+
+  const showSaved = () =>{
+    setLoader(false)
+    setMainTitle('Saved News')
+    fetchSavedData()
+  }
 
   return ( 
     <React.Fragment>
@@ -109,11 +188,16 @@ export default function Homepage() {
         <main>
         <MainFeaturedPost post={mainFeaturedPost} />
         <Grid container spacing={5} className={classes.mainGrid}>
-          <Main title="Top Headlines" category={category} news={news} page={page} counts={counts} handleChange={handleChange} handleSection={handleSection}/>
-          <Sidebar
+          {loader === false ? <Main title={maintitle} category={category} news={news} page={page} counts={counts} handleChange={handleChange} handleSection={handleSection} handleSave={handleSave} />
+          : <Grid item xs={12} md={8}>
+             <LinearProgress color="primary" gutterBottom/>
+            </Grid>
+          }
+           <Sidebar
             title={sidebar.title}
             description={sidebar.description}
             countries={sidebar.countries}
+            showSaved={showSaved}
           />
         </Grid>
       </main>

@@ -6,16 +6,16 @@ import HeadlineCard from './HeadlineCard';
 
 export default function Main(props) {
 
-  const {category, news, page, counts, handleChange, handleSection} = props
+  const {category, news, page, counts, handleChange, handleSection, handleSave, title} = props
 
   return (
     <Grid item xs={12} md={8}>
       <Typography variant="h6" gutterBottom>
-        Top Headlines
+        {title}
       </Typography>
       <Divider />
    
-        <HeadlineCard category={category} news={news} page={page} counts={counts} handleChange={handleChange} handleSection={handleSection}/>
+        <HeadlineCard category={category} news={news} page={page} counts={counts} handleChange={handleChange} handleSection={handleSection} handleSave={handleSave} />
     
     </Grid>
   );

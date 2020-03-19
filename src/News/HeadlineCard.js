@@ -19,14 +19,26 @@ const useStyles = makeStyles({
   },
   media: {
     height: 140,
+    minWidth: 800
   },
 });
 
 export default function HeadlineCard(props) {
   const classes = useStyles();
 
-  const {news, page, counts, handleChange} = props
+  const {news, page, counts, handleChange, handleSection} = props
 
+  const AuthToken = localStorage.getItem('myToken')
+
+  const handleSave = () => {
+
+    console.log(AuthToken)
+
+    if(!AuthToken){
+      alert("Please login to save news")
+    }
+    
+  }
   return (
     <Grid container spacing={1}>
     {news.slice((page * 6) - 6, (page * 6)).map((item, index) => (
@@ -55,10 +67,15 @@ export default function HeadlineCard(props) {
               </CardContent>
             </CardActionArea>
             <CardActions>
-              <Button size="small" color="primary">
+              <Button size="small" color="primary" onClick={handleSave}>
                 Save
               </Button>
-              <Button size="small" color="primary">
+              <Button size="small" color="primary" 
+                data-title={item.title}
+                data-publishedAt={item.publishedAt}
+                data-content={item.content}
+                data-author={item.author}
+                value={item.title} onClick={handleSection}> 
                 Read More
               </Button>
             </CardActions>

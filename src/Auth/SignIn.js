@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useState} from 'react';
+import axios from 'axios';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -11,6 +12,7 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { Redirect } from 'react-router'
 
 function Copyright() {
   return (
@@ -47,8 +49,35 @@ const useStyles = makeStyles(theme => ({
 
 export default function SignIn() {
   const classes = useStyles();
+  const [redirect, setRedirect] = useState(false)
+
+  const handleSignin = async event => {
+
+    event.preventDefault();
+
+    const data = new FormData(event.target);
+
+    const datas = {
+      "email" : data.get('email'),
+      "password" : data.get('password')
+    }
+
+    localStorage.clear()
+
+    await axios.post('http://localhost:3001/users/login',datas).then((result) => {
+
+        console.log(result)
+        localStorage.setItem('myToken', result.data.token)
+        localStorage.setItem('id', result.data.user._id)
+        localStorage.setItem('name', result.data.user.name)
+        setRedirect(true)
+        
+    });
+  }
 
   return (
+    <React.Fragment> 
+    {redirect ? <Redirect to='/' /> : null }
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
@@ -57,7 +86,7 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} onSubmit={handleSignin} noValidate>
           <TextField
             variant="outlined"
             margin="normal"
@@ -106,5 +135,6 @@ export default function SignIn() {
         <Copyright />
       </Box>
     </Container>
+    </React.Fragment>
   );
 }

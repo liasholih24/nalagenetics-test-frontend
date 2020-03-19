@@ -27,6 +27,7 @@ const useStyles = makeStyles(theme => ({
 export default function Header(props) {
   const classes = useStyles();
   const { sections, title, onCategoryClick, handleCountry, id, name} = props;
+  const Authname = localStorage.getItem('name')
 
   return (
     <React.Fragment>
@@ -44,9 +45,7 @@ export default function Header(props) {
         >
           {title}
         </Typography>
-        <Button variant="outlined" size="small" href="/sign-in">
-          Sign in
-        </Button>
+        {Authname ?  Authname : <Button variant="outlined" size="small" href="/sign-in">Sign in</Button>} 
       </Toolbar>
       <Toolbar component="nav" variant="dense" className={classes.toolbarSecondary}>
         {sections.map(section => (

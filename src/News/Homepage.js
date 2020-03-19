@@ -34,9 +34,9 @@ const sections = [
 ];
 
 const mainFeaturedPost = {
-  title: 'Title of a longer featured blog post',
+  title: 'Welcome to News',
   description:
-    "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
+    "Get breaking news headline from worlwide and search article from over 30,000 news sources and blogs.",
   image: 'https://source.unsplash.com/random',
   imgText: 'main image description',
   linkText: 'Continue reading…',
@@ -45,7 +45,7 @@ const mainFeaturedPost = {
 
 const sidebar = { 
   title: 'About',
-  description: 'Get breaking news headline from worlwide and search article from over 30,000 news sources and blogs.'
+  description: 'News API is great as a data source for news tickers and other applications where you want to show your users live headlines. We track headlines in 7 categories across over 50 countries, and at over a hundred top publications and blogs, in near real time'
 };
 
 export default function Homepage() {
@@ -119,6 +119,7 @@ export default function Homepage() {
   }
 
   const handleCountry = (event) => {
+    setLoader(true)
     setId(event.target.value || '')
     setName(event.currentTarget.dataset.name || '')
     console.log(event.target.value)
@@ -158,12 +159,9 @@ export default function Homepage() {
 
   const saveNews = async (values) => {
 
-    console.log(values)
-
     const config = {
       headers: { Authorization: `Bearer ${AuthToken}` }
     };
-  
 
     await axios.post('http://localhost:3001/news',values,config).then((result) => {
 

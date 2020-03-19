@@ -128,6 +128,13 @@ export default function SignUp() {
               </Link>
             </Grid>
           </Grid>
+          <Grid container>
+            <Grid item>
+              <Link href="/" variant="body2">
+                {"Back to website"}
+              </Link>
+            </Grid>
+          </Grid>
         </form>
       </div>
       <Box mt={8}>

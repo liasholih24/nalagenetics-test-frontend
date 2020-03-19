@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -8,6 +8,7 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
+import { Redirect } from 'react-router'
 
 const useStyles = makeStyles(theme => ({
   sidebarAboutBox: {
@@ -39,8 +40,16 @@ export default function Sidebar(props) {
   const { description, title, showSaved } = props;
   const AuthToken = localStorage.getItem('myToken')
   const AuthName = localStorage.getItem('name')
+  const [redirect, setRedirect] = useState(false)
+
+  const signOut = () => { 
+    localStorage.clear()
+    setRedirect(true)
+  }
 
   return (
+    <React.Fragment>
+    {redirect ? <Redirect to='/sign-in' /> : null }
     <Grid item xs={12} md={4}>
       <Paper elevation={0} className={classes.sidebarAboutBox}>
         <Typography variant="h6" gutterBottom>
@@ -61,9 +70,12 @@ export default function Sidebar(props) {
       <CardActions>
         <Button size="small" onClick={showSaved}>My Saved News</Button>
       </CardActions>
+      <CardActions>
+        <Button size="small" onClick={signOut}>Sign Out</Button>
+      </CardActions>
     </Card> : null}
-      
     </Grid>
+    </React.Fragment>
   );
 }
 

@@ -22,6 +22,11 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(1),
     flexShrink: 0,
   },
+  button: {
+    '& > *': {
+      margin: theme.spacing(1),
+    }
+  }
 }));
 
 export default function Header(props) {
@@ -45,7 +50,12 @@ export default function Header(props) {
         >
           {title}
         </Typography>
-        {Authname ?  Authname : <Button variant="outlined" size="small" href="/sign-in">Sign in</Button>} 
+        {Authname ? Authname : 
+        <div className={classes.button}>
+          <Button variant="outlined" size="small" href="/sign-in">Sign in</Button>
+          <Button variant="outlined" size="small" href="/sign-up">Sign up</Button>
+        </div>
+        } 
       </Toolbar>
       <Toolbar component="nav" variant="dense" className={classes.toolbarSecondary}>
         {sections.map(section => (
